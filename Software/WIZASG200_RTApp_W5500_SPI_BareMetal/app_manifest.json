@@ -1,0 +1,12 @@
+{
+  "SchemaVersion": 1,
+  "Name": "WIZASG200_RTApp_W5500_SPI_BareMetal",
+  "ComponentId": "005180bc-402f-4cb3-a662-72937dbcde47",
+  "EntryPoint": "/bin/app",
+  "CmdArgs": [],
+  "Capabilities": {
+    "SpiMaster": [ "ISU1" ],
+    "AllowedApplicationConnections": [ "819255ff-8640-41fd-aea7-f85d34c491d5" ]
+  },
+  "ApplicationType": "RealTimeCapable"
+}

@@ -1,0 +1,31 @@
+{
+    "Metadata":
+    {
+        "Type": "Azure Sphere Hardware Definition",
+        "Version": 1
+    },
+    "Description":
+    {
+        "Name": "WIZNET Azure Sphere Guardian 200 (ASG200)",
+        "MainCoreHeaderFileTopContent": [
+            "/* Copyright (c) Microsoft Corporation. All rights reserved.",
+            "   Licensed under the MIT License. */",
+            "",
+            "// This header contains the peripheral pinout definitions for the",
+            "// WIZNET Azure Sphere Guardian 200 (ASG200)"
+        ]
+    },
+    "Imports" : [ {"Path": "../avnet_aesms_mt3620/avnet_aesms_mt3620.json"} ],
+    "Peripherals": [
+        {"Name": "WIZNET_ASG200_CONNECTION_STATUS_LED", "Type": "Gpio", "Mapping": "AVNET_AESMS_PIN8_GPIO4", "Comment": "Connection status LED uses GPIO4."},
+        {"Name": "WIZNET_ASG200_WLAN_STATUS_LED", "Type": "Gpio", "Mapping": "AVNET_AESMS_PIN11_GPIO8", "Comment": "WLAN status LED uses GPIO8."},
+        {"Name": "WIZNET_ASG200_ETH0_STATUS_LED", "Type": "Gpio", "Mapping": "AVNET_AESMS_PIN12_GPIO9", "Comment": "Ethernet 0 status LED uses GPIO9."},
+        {"Name": "WIZNET_ASG200_ETH1_STATUS_LED", "Type": "Gpio", "Mapping": "AVNET_AESMS_PIN13_GPIO10", "Comment": "Ethernet 1 status LED uses GPIO10."},
+        {"Name": "WIZNET_ASG200_USER_BUTTON", "Type": "Gpio", "Mapping": "AVNET_AESMS_PIN15_GPIO13", "Comment": "User Button uses GPIO13."},
+        {"Name": "WIZNET_ASG200_ETH0_INT", "Type": "Gpio", "Mapping": "AVNET_AESMS_PIN9_GPIO5", "Comment": "Ethernet 0 use GPIO5 as interrupt pin."},
+        {"Name": "WIZNET_ASG200_ETH1_INT", "Type": "Gpio", "Mapping": "AVNET_AESMS_PIN7_GPIO2", "Comment": "Ethernet 1 use GPIO2 as interrupt pin."},
+        {"Name": "WIZNET_ASG200_ETH0_SPI", "Type": "SpiMaster", "Mapping": "AVNET_AESMS_ISU0_SPI", "Comment": "Ethernet 0 connected to SPI using ISU0. (with Microchip ENC28j60 for Public network)"},
+        {"Name": "WIZNET_ASG200_ETH1_SPI", "Type": "SpiMaster", "Mapping": "AVNET_AESMS_ISU1_SPI", "Comment": "Ethernet 1 connected to SPI using ISU1, pin MISO (MISO), pin SCK (SCLK), pin MOSI (MOSI) and pin CS (CSB). (with WIZnet W5500 for Private network)"},
+        {"Name": "WIZNET_ASG200_SPI_CS", "Type": "int", "Mapping": "MT3620_SPI_CS_B", "Comment": "MT3620 SPI Chip Select (CS) value \"B\". This is not a peripheral identifier, and so has no meaning in an app manifest."},
+    ]
+}
