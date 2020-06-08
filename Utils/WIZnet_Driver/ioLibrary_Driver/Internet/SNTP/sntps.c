@@ -7,6 +7,8 @@
 
 
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "sntps.h"
 #include "../../Ethernet/socket.h"
@@ -110,6 +112,25 @@ void SNTPs_init(uint8_t s, uint8_t *buf)
   Nowdatetime.ss = 0;
 
   timestamp = numberOfSecondsSince1900Epoch();
+}
+
+void SNTPs_sync_time(uint8_t *buf)
+{
+  struct tm tm;
+
+  // printf("SNTPs_sync_time: %s\r\n", buf);
+  if (strptime(buf, "%Y-%m-%d %H:%M:%S", &tm) == NULL) {
+    printf("time sync failed.\r\n");
+  } else {
+    Nowdatetime.yy = tm.tm_year+1900;
+    Nowdatetime.mo = tm.tm_mon+1;
+    Nowdatetime.dd = tm.tm_mday;
+    Nowdatetime.hh = tm.tm_hour;
+    Nowdatetime.mm = tm.tm_min;
+    Nowdatetime.ss = tm.tm_sec;
+
+    timestamp = numberOfSecondsSince1900Epoch();
+  }
 }
 
 /*

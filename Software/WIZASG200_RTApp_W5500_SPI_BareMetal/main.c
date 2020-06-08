@@ -36,6 +36,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "printf.h"
 #include "mt3620.h"
@@ -102,14 +103,14 @@ typedef struct {
 } ComponentId;
 
 #define MBOX_BUFFER_LEN_MAX 1048
-static uint8_t mbox_local_buf[MBOX_BUFFER_LEN_MAX];
+static uint8_t mbox_send_buf[MBOX_BUFFER_LEN_MAX];
+static uint8_t mbox_recv_buf[MBOX_BUFFER_LEN_MAX];
+
 // 819255ff-8640-41fd-aea7-f85d34c491d5
 static const ComponentId hlAppId = { .data1 = 0x819255ff,
                                     .data2 = 0x8640,
                                     .data3 = 0x41fd,
                                     .data4 = {0xae, 0xa7, 0xf8, 0x5d, 0x34, 0xc4, 0x91, 0xd5} };
-
-
 
 /* Bitmap for IRQ enable. bit_0 and bit_1 are used to communicate with HL_APP */
 static const uint32_t mbox_irq_status = 0x3;
@@ -141,7 +142,7 @@ static volatile int g_async_done_flag;
 
 // Default Static Network Configuration for TCP Server //
 wiz_NetInfo gWIZNETINFO = { {0x00, 0x08, 0xdc, 0xff, 0xfa, 0xfb},
-                           {192, 168, 50, 110},
+                           {192, 168, 50, 1},
                            {255, 255, 255, 0},
                            {192, 168, 50, 1},
                            {8, 8, 8, 8},
@@ -165,8 +166,6 @@ BufferHeader *outbound, *inbound;
 static uint32_t mbox_shared_buf_size;
 volatile u8  blockDeqSema;
 volatile u8  blockFifoSema;
-volatile u8  blockFifoSema_M4;
-volatile u8  SwIntSema_M4;
 static const u32 pay_load_start_offset = 20; /* UUID 16B, Reserved 4B */
 
 
@@ -218,7 +217,6 @@ void InitPrivateNetInfo(void) {
 }
 
 
-
 /* Mailbox Fifo Interrupt handler.
  * Mailbox Fifo Interrupt is triggered when mailbox fifo been R/W.
  *     data->event.channel: Channel_0 for A7, Channel_1 for the other M4.
@@ -257,67 +255,37 @@ void mbox_swint_cb(struct mtk_os_hal_mbox_cb_data *data)
 	}
 }
 
-void mbox_print_and_convert_buf(u8 *mbox_buf, u32 mbox_data_len)
+void mbox_get_payload(u8 *mbox_buf, u32 mbox_data_len)
 {
+    uint8_t* timebuf;
+#if 0
 	u32 payload_len;
-	u32 i;
-
-	printf("Received message of %d bytes (from A7):\n", mbox_data_len);
-	printf("  Component Id (16 bytes): %02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X\n",
-			mbox_buf[3], mbox_buf[2], mbox_buf[1], mbox_buf[0],
-			mbox_buf[5], mbox_buf[4], mbox_buf[7], mbox_buf[6],
-			mbox_buf[8], mbox_buf[9], mbox_buf[10], mbox_buf[11],
-			mbox_buf[12], mbox_buf[13], mbox_buf[14], mbox_buf[15]);
-
-	/* Print reserved field as little-endian 4-byte integer. */
-	printf("  Reserved (4 bytes): 0x%02X %02X %02X %02X\n",
-		mbox_buf[19], mbox_buf[18], mbox_buf[17], mbox_buf[16]);
-
-	/* Print message as hex. */
-	payload_len = mbox_data_len - pay_load_start_offset;
-	printf("  Payload (%d bytes as hex): ", payload_len);
-	for (i = pay_load_start_offset; i < mbox_data_len; ++i)
-		printf("0x%02X ", mbox_buf[i]);
-	printf("\n");
+    payload_len = mbox_data_len - pay_load_start_offset;
 
 	/* Print message as text. */
 	printf("  Payload (%d bytes as text): ", payload_len);
 	for (i = pay_load_start_offset; i < mbox_data_len; ++i)
 		printf("%c", mbox_buf[i]);
 	printf("\n");
+#endif
 
-	/* Convert payload, upper to lower, lower to upper.*/
-	for (i = pay_load_start_offset; i < mbox_data_len; ++i) {
-		if (isupper(mbox_buf[i]))
-			mbox_buf[i] = tolower(mbox_buf[i]);
-		else if (islower(mbox_buf[i]))
-			mbox_buf[i] = toupper(mbox_buf[i]);
-	}
+    timebuf = &mbox_buf[pay_load_start_offset];
 
-	printf("  Send back (%d bytes as text):", payload_len);
-	for (i = pay_load_start_offset; i < mbox_data_len; ++i)
-		printf("%c", mbox_buf[i]);
-	printf("\n\n");
-
-	printf("%s", mbox_buf);
+    SNTPs_sync_time(timebuf);
 }
 
 void mbox_init(void)
 {
 	struct mbox_fifo_event mask;
 
-	printf("mbox init\n");
-
 	/* Init buffer */
-	memset(mbox_local_buf, 0, MBOX_BUFFER_LEN_MAX);
+	memset(mbox_send_buf, 0, MBOX_BUFFER_LEN_MAX);
 
     /* Open the MBOX channel of A7 <-> M4 */
 	mtk_os_hal_mbox_open_channel(OS_HAL_MBOX_CH0);
 
 	blockDeqSema = 0;
 	blockFifoSema = 0;
-	blockFifoSema_M4 = 0;
-	SwIntSema_M4 = 0;
 
 	/* Register interrupt callback */
 	mask.channel = OS_HAL_MBOX_CH0;
@@ -333,32 +301,40 @@ void mbox_init(void)
 		printf("GetIntercoreBuffers failed\n");
 		return;
 	}
-	printf("shared buf size = %d\n", mbox_shared_buf_size);
-	printf("local buf size = %d\n", MBOX_BUFFER_LEN_MAX);
+	printf("Mbox shared buf size = %d\n", mbox_shared_buf_size);
+	// printf("Mbox local buf size = %d\n", MBOX_BUFFER_LEN_MAX);
 
-	memcpy((void*)&mbox_local_buf, (void*)&hlAppId, sizeof(hlAppId));
-	
-    printf("Check Component Id (16 bytes): %02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X\n",
-        mbox_local_buf[3], mbox_local_buf[2], mbox_local_buf[1], mbox_local_buf[0],
-        mbox_local_buf[5], mbox_local_buf[4], mbox_local_buf[7], mbox_local_buf[6],
-        mbox_local_buf[8], mbox_local_buf[9], mbox_local_buf[10], mbox_local_buf[11],
-        mbox_local_buf[12], mbox_local_buf[13], mbox_local_buf[14], mbox_local_buf[15]);
+	memcpy((void*)&mbox_send_buf, (void*)&hlAppId, sizeof(hlAppId));
 }
 
 void mbox_send_data_a7(uint8_t* sock_data, uint32_t datasize)
 {
-	/* Handle A7 <--> M4 Communication */
     uint32_t size;
 	int result;
 
-    memcpy((void*)&mbox_local_buf[pay_load_start_offset], sock_data, datasize);
+    memcpy((void*)&mbox_send_buf[pay_load_start_offset], sock_data, datasize);
     size = pay_load_start_offset + datasize;
 
-	result = EnqueueData(inbound, outbound, mbox_shared_buf_size, mbox_local_buf, size);
+    /* Write to A7, enqueue to mailbox */
+	result = EnqueueData(inbound, outbound, mbox_shared_buf_size, mbox_send_buf, size);
 	if (result == -1) {
 		printf("Mailbox enqueue failed!\n");
 	}
+}
 
+void mbox_receive_data(void)
+{
+    uint8_t result;
+    uint32_t buf_len;
+
+    memset(mbox_recv_buf, 0, MBOX_BUFFER_LEN_MAX);
+
+    /* Read from A7, dequeue from mailbox */
+    result = DequeueData(outbound, inbound, mbox_shared_buf_size, mbox_recv_buf, &buf_len);
+    if (result == -1 || buf_len < pay_load_start_offset) {
+        printf("Mailbox dequeue failed!\n");
+    }
+    mbox_get_payload(mbox_recv_buf, buf_len);
 }
 
 void mbox_tcp_server(uint8_t sn, uint8_t* sock_buf, uint16_t port)
@@ -387,26 +363,26 @@ void mbox_tcp_server(uint8_t sn, uint8_t* sock_buf, uint16_t port)
             if (ret <= 0)
                 return ret; // check SOCKERR_BUSY & SOCKERR_XXX. For showing the occurrence of SOCKERR_BUSY.
 
-            printf("Received data from socket %d: (%d) %s\r\n", sn, size, sock_buf);
+            printf("Received data from socket %d : (%d) %s\r\n", sn, size, sock_buf);
 
-            // intercoreComms
+            // Send data to a7 core
 			mbox_send_data_a7(sock_buf, size);
         }
         break;
     case SOCK_CLOSE_WAIT:
         if ((ret = sock_disconnect(sn)) != SOCK_OK)
             return ret;
-        printf("%d:Socket Closed\r\n", sn);
+        printf("%d : Socket Closed\r\n", sn);
         break;
     case SOCK_INIT:
-        printf("%d:Listen, TCP server, port [%d]\r\n", sn, port);
+        printf("%d : Listen, TCP server, port [%d]\r\n", sn, port);
         if ((ret = sock_listen(sn)) != SOCK_OK)
             return ret;
         break;
     case SOCK_CLOSED:
         if ((ret = wiz_socket(sn, Sn_MR_TCP, port, 0x00)) != sn)
             return ret;
-        printf("%d:Socket Opened\r\n", sn);
+        printf("%d : Socket Opened\r\n", sn);
         break;
     default:
         break;
@@ -432,7 +408,7 @@ _Noreturn void RTCoreMain(void)
     printf("App built on: " __DATE__ " " __TIME__ "\r\n");
 
     InitPrivateNetInfo();
-#define TEST_AX1
+// #define TEST_AX1
     dhcps_init(2, gDATABUF);
 #ifndef TEST_AX1
     SNTPs_init(3, gsntpDATABUF);
@@ -462,6 +438,10 @@ _Noreturn void RTCoreMain(void)
         loopback_tcps(1, s1_Buf, 50001);
 
 		mbox_tcp_server(0, s0_Buf, 5000);
+        if (blockDeqSema != 0) {
+            mbox_receive_data();
+            blockDeqSema--;
+        }
 
 #ifndef TEST_AX1
         i++;

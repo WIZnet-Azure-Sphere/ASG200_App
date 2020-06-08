@@ -83,6 +83,7 @@ typedef struct _datetime
 void SNTPs_init(uint8_t s, uint8_t *buf);
 int8_t SNTPs_run();
 uint32_t numberOfSecondsSince1900Epoch();
+void SNTPs_sync_time(uint8_t *buf);
 
 #ifdef __cplusplus
 }
