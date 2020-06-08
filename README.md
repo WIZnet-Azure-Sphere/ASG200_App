@@ -2,7 +2,7 @@
 
 WIZnet Azure Sphere Guardian 200 (ASG200) is a product which provides Ethernet interfaces to both Public and Private Network. This is how to set up ASG200 for data communication between your device and Azure IoT Cloud with ASG200.
 
-![Azure Sphere Guardian 200](./Docs/reference/azure-sphere-guardian-200/png)
+![Azure Sphere Guardian 200](./Docs/references/azure-sphere-guardian-200.png)
 
 # Contents
 
@@ -74,7 +74,7 @@ For the more details, enter the below link:
 
 On Azure Sphere Developer Command Prompt Preview, the option, -?, helps to show the command information.
 
-![Azure Sphere CLI - ? option](./Docs/reference/azure-sphere-cli-question-option.png)
+![Azure Sphere CLI - ? option](./Docs/references/azure-sphere-cli-question-opeion.png)
 
 ## Register User Account
 
@@ -285,7 +285,7 @@ Follow these steps to enable public ethernet interface:
    azsphere device image list-installed
    ```
 
-![Azure Sphere CLI - Image Installed list](./Docs/reference/azure-shpere-cli-image-installed-list.png)
+![Azure Sphere CLI - Image Installed list](./Docs/references/azure-sphere-cli-image-installed-list.png)
 
 ## Build and Run the Application
 
@@ -299,15 +299,15 @@ Follow these steps to build and run the application with Visual Studio:
 
 2. Open app_manifest.json file and check the information correct.
 
-![Visual Studio - Open app_manifest.json](./Docs/reference/visual-studio-open-app-manifest.json.png)
+![Visual Studio - Open app_manifest.json](./Docs/references/visual-studio-open-app-manifest.josn.png)
 
 3. From the Select Startup Item menu, on the tool bar, select GDB Debugger (HLCore).
 
-![Visual Studio - Select GDB Debugger](./Docs/reference/visual-studio-select-gdb-debugger.png)
+![Visual Studio - Select GDB Debugger](./Docs/references/visual-studio-select-gdb-debugger.png)
 
 4. Click Build>Build All to build the project
 
-![Visual Studio - Build the project](./Docs/reference/visual-studio-build-the-project.png)
+![Visual Studio - Build the project](./Docs/references/visual-studio-build-the-project.png)
 
 5. Press F5 to start the application with debugging.
 
@@ -317,7 +317,7 @@ Follow these steps to build and run the application with Visual Studio Code:
 
 1. Open ‘HLApp_AzureIoT_ASG200’ folder.
 
-![Visual Studio Code - Open Project Folder](./Docs/reference/visual-studio-code-open-project-folder.png)
+![Visual Studio Code - Open Project Folder](./Docs/references/visual-studio-code-open-project-folder.png)
 
 2. Press F7 to build the project
 
