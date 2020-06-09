@@ -1,5 +1,3 @@
-- [WIZASG200_RTApp_W5500_SPI_BareMetal](#wizasg200_rtapp_w5500_spi_baremetal)
-  - [Build and Run the Application](#build-and-run-the-application)
 
 # WIZASG200_RTApp_W5500_SPI_BareMetal
 
@@ -29,11 +27,11 @@ Follow these steps to build and run the application with Visual Studio:
 
 2. From the Select Startup Item menu, on the tool bar, select `GDB Debugger (RTCore)`.
 
-![Visual Studio - Select GDB Debugger](./Docs/references/visual-studio-select-gdb-debugger-rt.png)
+![Visual Studio - Select GDB Debugger](../../Docs/references/visual-studio-select-gdb-debugger-rt.png)
 
 4. Click `Build` > `Build All` to build the project
 
-![Visual Studio - Build the project](./Docs/references/visual-studio-build-the-project.png)
+![Visual Studio - Build the project](../../Docs/references/visual-studio-build-the-project.png)
 
 5. Press F5 to start the application with debugging.
 
@@ -43,7 +41,7 @@ Follow these steps to build and run the application with Visual Studio Code:
 
 1. Open `WIZASG200_RTApp_W5500_SPI_BareMetal` folder.
 
-![Visual Studio Code - Open Project Folder](./Docs/references/visual-studio-code-open-project-folder.png)
+![Visual Studio Code - Open Project Folder](../../Docs/references/visual-studio-code-open-project-folder.png)
 
 2. Press F7 to build the project
 

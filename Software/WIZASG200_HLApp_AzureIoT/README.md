@@ -1,10 +1,4 @@
 
-- [WIZASG200_HLApp_AzureIoT](#wizasg200_hlapp_azureiot)
-  - [Configure an IoT Hub](#configure-an-iot-hub)
-  - [Set up Public Ethernet interface](#set-up-public-ethernet-interface)
-  - [Build and Run the Application](#build-and-run-the-application)
-
-
 # WIZASG200_HLApp_AzureIoT
 
 High-level (HL) application run containerized on the Azure Sphere OS. In ASG200, HLApp (High-level application) is ‘HLApp_AzureIoT_WIZASG200’ and it provides whole functions for Azure IoT Cloud service. Also, it automatically switches global interface, Ethernet and Wi-Fi, for network condition.
@@ -90,7 +84,7 @@ Follow these steps to enable public ethernet interface:
    azsphere device image list-installed
    ```
 
-![Azure Sphere CLI - Image Installed list](./Docs/references/azure-sphere-cli-image-installed-list.png)
+![Azure Sphere CLI - Image Installed list](../../Docs/references/azure-sphere-cli-image-installed-list.png)
 
 ## Build and Run the Application
 
@@ -104,15 +98,15 @@ Follow these steps to build and run the application with Visual Studio:
 
 2. Open app_manifest.json file and check the information correct.
 
-![Visual Studio - Open app_manifest.json](./Docs/references/visual-studio-open-app-manifest.josn.png)
+![Visual Studio - Open app_manifest.json](../../Docs/references/visual-studio-open-app-manifest.josn.png)
 
 3. From the Select Startup Item menu, on the tool bar, select GDB Debugger (HLCore).
 
-![Visual Studio - Select GDB Debugger](./Docs/references/visual-studio-select-gdb-debugger-hl.png)
+![Visual Studio - Select GDB Debugger](../../Docs/references/visual-studio-select-gdb-debugger-hl.png)
 
 4. Click Build>Build All to build the project
 
-![Visual Studio - Build the project](./Docs/references/visual-studio-build-the-project.png)
+![Visual Studio - Build the project](../../Docs/references/visual-studio-build-the-project.png)
 
 5. Press F5 to start the application with debugging.
 
@@ -122,7 +116,7 @@ Follow these steps to build and run the application with Visual Studio Code:
 
 1. Open ‘HLApp_AzureIoT_ASG200’ folder.
 
-![Visual Studio Code - Open Project Folder](./Docs/references/visual-studio-code-open-project-folder.png)
+![Visual Studio Code - Open Project Folder](../../Docs/references/visual-studio-code-open-project-folder.png)
 
 2. Press F7 to build the project
 
