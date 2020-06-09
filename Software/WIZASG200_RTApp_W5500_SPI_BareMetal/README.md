@@ -1,37 +1,50 @@
-# Sample: MT3620 M4 real-time application - Bare Metal GPIO
-### Description
-This sample demonstrates how to use GPIO, GPT and UART on an MT3620 real-time core.  
-- On-board LED_Red(GPIO8), LED_Green(GPIO9) and LED_Blue(GPIO10) are used as GPIO output.
-- On-board Button_A(GPIO12) and Button_B(GPIO13) are used as GPIO input.
-- GPT0 is used for LED_Green blinking.
-- GPT3 is used for motitoring Button_A and Button_B status.
-- ISU0 UART interface is used to print the output log.
-- User could press Button_A to turn on LED_Blue, and release to turn off.
-- User could press Button_B to turn on LED_Red, and release to turn off.  
-(Note, UART port number in main.c could be changed from **OS_HAL_UART_ISU0** to **OS_HAL_UART_PORT0** to use M4 dedicate UART port.)  
-Please refer to the [MT3620 M4 API Rerference Manual](https://support.mediatek.com/AzureSphere/mt3620/M4_API_Reference_Manual) for the detailed API description.
+- [WIZASG200_RTApp_W5500_SPI_BareMetal](#wizasg200_rtapp_w5500_spi_baremetal)
+  - [Build and Run the Application](#build-and-run-the-application)
 
-### Prerequisites
-* **Hardware**
-    * [AVNET MT3620 Starter Kit](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-ms-mt3620-sk-g-3074457345636825680/) or [Seeed MT3620 Development Kit](https://www.seeedstudio.com/Azure-Sphere-MT3620-Development-Kit-US-Version-p-3052.html)
-* **Software**
-    * Refer to [Azure Sphere software installation guide](https://docs.microsoft.com/en-ca/azure-sphere/install/overview).
-    * A terminal emulator (such as Telnet or [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) to display the output log).
+# WIZASG200_RTApp_W5500_SPI_BareMetal
 
-### How to build and run the sample
-1. Start Visual Studio.  
-2. From **File** menu, select **Open > CMake...** and navigate to the folder that contains this sample.  
-3. Select **CMakeList.txt** and then click **Open**.  
-4. Wait few seconds until Visual Studio finish create the project files.
-5. From **Build** menu, select **Build ALL (Ctrl+Shift+B)**.  
-6. Click **Select Start Item** and then select **GDB Debugger (RTCore)** as following.  
-    ![VS Start](../../BareMetal/MT3620_RTApp_BareMetal_HelloWorld/pic/select_start_item.jpg)
-7. Press **F5** to start the application with debugging.  
+Real-time (RT) capable application run on bare metal or with a real-time operating system on the real-time cores.
+In ASG200, RTApp (Real-time capable Application) is `RTApp_W5500_SPI_BareMetal_WIZASG200` and it controls WIZnet W5500 ethernet chip and provides variety protocol communications with legacy devices on brown field. Also, it performs inter-core communication between RTApp and HLApp (High-level Application).
 
-### Hardware configuration
-* [AVNET MT3620 Starter Kit](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-ms-mt3620-sk-g-3074457345636825680/)
-    * Connect PC UART Rx to AVNET MT3620 Starter Kit Click #1 TX (ISU0_UART_TX):
-        ![AVNET UART](../../BareMetal/MT3620_RTApp_BareMetal_HelloWorld/pic/avnet_uart.png)
-* [Seeed MT3620 Development Kit](https://www.seeedstudio.com/Azure-Sphere-MT3620-Development-Kit-US-Version-p-3052.html)
-    * Connect PC UART Rx to Seeed MT3620 Development Kit GPIO 26 / TXD0  (ISU0_UART_TX)
-        ![Seeed UART](../../BareMetal/MT3620_RTApp_BareMetal_HelloWorld/pic/seeed_uart.png)
+`RTApp_W5500_SPI_BareMetal_WIZASG200` is performed as the followed:
+
+- WIZnet W5500 SPI control
+  - Local network communication with brown field
+  - Ethernet interface
+  - TCP Server for data communication with brown field
+  - DHCP Server for local network address configuration of brown field
+  - SNTP Server for time information management
+- Inter-core communication
+  - Send the parsing data from brown field to HLApp
+
+## Build and Run the Application
+
+The application can be run and developed with Visual Studio and Visual Studio Code.
+
+### Run with Visual Studio
+
+Follow these steps to build and run the application with Visual Studio:
+
+1. Start Visual Studio, From the File menu, select `Open` > `Folder…` and navigate to the folder, `WIZASG200_RTApp_W5500_SPI_BareMetal`.
+
+2. From the Select Startup Item menu, on the tool bar, select `GDB Debugger (RTCore)`.
+
+![Visual Studio - Select GDB Debugger](./Docs/references/visual-studio-select-gdb-debugger-rt.png)
+
+4. Click `Build` > `Build All` to build the project
+
+![Visual Studio - Build the project](./Docs/references/visual-studio-build-the-project.png)
+
+5. Press F5 to start the application with debugging.
+
+### Run with Visual Studio Code
+
+Follow these steps to build and run the application with Visual Studio Code:
+
+1. Open `WIZASG200_RTApp_W5500_SPI_BareMetal` folder.
+
+![Visual Studio Code - Open Project Folder](./Docs/references/visual-studio-code-open-project-folder.png)
+
+2. Press F7 to build the project
+
+3. Press F5 to start the application with debugging

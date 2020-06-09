@@ -21,11 +21,8 @@ WIZnet Azure Sphere Guardian 200 (ASG200) is a product which provides Ethernet i
   - [ASG200 Configuration](#asg200-configuration)
 
 - [Run Application](#run-application)
-  - [Real-time capable Application: W5500 SPI BareMetal](#real-time-capable-application:-w5500-spi-baremetal)
-  - [High-level Application: AzureIoT](#high-level-application:-azureiot)
-  - [Configure an IoT Hub](#configure-an-iot-hub)
-  - [Set up Public Ethernet interface](#set-up-public-ethernet-interface)
-  - [Build and Run the Application](#build-and-run-the-application)
+  - [Real-time capable Application: W5500 SPI BareMetal](#real-time-capable-application-w5500-spi-baremetal)
+  - [High-level Application: AzureIoT](#high-level-application-azureiot)
 
 ---
 
@@ -54,12 +51,12 @@ Then complete Azure Sphere SDK Extension Install for development tool.
 - [For Visual Studio, Azure Sphere SDK Extension Install](https://docs.microsoft.com/ko-kr/azure-sphere/install/development-environment-windows#develop-with-visual-studio)
 - [For Visual Studio, Azure Sphere SDK Extension Install](https://docs.microsoft.com/ko-kr/azure-sphere/install/development-environment-windows#develop-with-visual-studio-code)
 
-## Azure Sphere Debuger
+## Azure Sphere Debugger
 
 The MT3620 exposes two dedicated UARTs and SWD interface for debugging. The Azure Sphere PC software tools require the use of a USB-to-UART interface that exposes these interfaces to a PC in away that allows the tools to recognize and interact with them.
-For this, ASG200 components has ‘Debugger’ board which can attaches to 18pin headers on ASG200. To use this debugger board, user should init the interface information with FTDI tools.
+For this, ASG200 components have a ‘Debugger’ board which can attaches to 18pin headers on ASG200. To use this debugger board, user should init the interface information with FTDI tools.
 
-Please follow these steps decribed in this link:
+Please follow these steps described in this link:
 
 - [FTDI FT_PROG programming tool](https://docs.microsoft.com/ko-kr/azure-sphere/hardware/mt3620-mcu-program-debug-interface#ftdi-ft_prog-programming-tool)
 
@@ -165,7 +162,9 @@ Follow these steps to update the latest Azure Sphere OS:
 
 ### Development Mode
 
-Connect Debugger board which is attached to ASG200 debug interface to PC and set development mode for debugging on In Azure Sphere Developer Command Prompt Preview. On development mode, OTA is inactivated.
+Connect Debugger board which is attached to ASG200 debug interface to PC and set development mode for debugging on In Azure Sphere Developer Command Prompt Preview. 
+
+On development mode, OTA is inactivated.
 
 1. Development mode for debugging
 
@@ -181,144 +180,14 @@ Connect Debugger board which is attached to ASG200 debug interface to PC and set
 
 # Run Application
 
-For ASG200 application, chapter 5, Development Environment, is preceded.
+For the ASG200 application, chapter 5, Development Environment, is preceded.
+
 ASG200 application has two types of applications, High-level application and Real-time capable application.
 
 ## Real-time capable Application: W5500 SPI BareMetal
 
-Real-time (RT) capable application run on bare metal or with a real-time operating system on the real-time cores.
-In ASG200, RTApp (Real-time capable Application) is ‘RTApp_W5500_SPI_BareMetal_WIZASG200’ and it controls WIZnet W5500 ethernet chip and provides variety protocol communications with legacy devices on brown field. Also, it performs inter-core communication between RTApp and HLApp (High-level Application).
-
-RTApp_W5500_SPI_BareMetal_WIZASG200 is performed as the followed:
-
-- WIZnet W5500 SPI control
-  - Local network communication with brown field
-  - Ethernet interface
-  - TCP Server for data communication with brown field
-  - DHCP Server for local network address configuration of brown field
-  - SNTP Server for time information management
-- Inter-core communication
-  - Send the parsing data from brown field to HLApp
+* [Run Real-time capable Application: W5500 SPI BareMetal](https://github.com/WIZnet-Azure-Sphere/ASG200_App/tree/master/Software/WIZASG200_RTApp_W5500_SPI_BareMetal)
 
 ## High-level Application: AzureIoT
 
-High-level (HL) application run containerized on the Azure Sphere OS. In ASG200, HLApp (High-level application) is ‘HLApp_AzureIoT_WIZASG200’ and it provides whole functions for Azure IoT Cloud service. Also, it automatically switches global interface, Ethernet and Wi-Fi, for network condition.
-
-HLApp_AzureIoT_WIZASG200 is performed as the followed:
-
-- Global network communication with Azure IoT Cloud service
-  - Ethernet and Wi-Fi interface
-  - Connection and Authentication on IoT Hub or IoT Central
-- Inter-core communication
-  - Receive the data from RTApp for sending to Azure IoT Cloud
-
-## Configure an IoT Hub
-
-To operate ASG200 application, RTApp and HLApp, Azure IoT Hub or IoT Central configuration is required.
-
-[Set up an Azure IoT Hub for Azure Sphere](https://docs.microsoft.com/en-us/azure-sphere/app-development/setup-iot-hub)
-
-[Set up an Azure IoT Central to work with Azure Sphere](https://docs.microsoft.com/en-us/azure-sphere/app-development/setup-iot-central)
-
-Then, user will need to supply the following information in the app_manifest.json file for Azure IoT:
-
-- The Tenant ID for ASG200
-- The Scope ID for Azure device provisioning service (DPS) instance
-- The Azure IoT Hub URL for user IoT Hub or Central along with the global access link to DPS (global.azure-devices.provisiong.net)
-
-In app_manifest.json, add Azure DPS Scope ID, Azure IoT Hub endpoint URL and Azure Sphere Tenant ID from Azure IoT Hub or Central into the following lines:
-
-```
-{
-  "SchemaVersion": 1,
-  "Name": "HLApp_AzureIoT_WIZASG200",
-  "ComponentId": "819255ff-8640-41fd-aea7-f85d34c491d5",
-  "EntryPoint": "/bin/app",
-  "CmdArgs": ["<Azure DPS Scope ID>"],
-  "Capabilities": {
-    "AllowedConnections": [
-      "global.azure-devices-provisioning.net",
-      "<Azure IoT Hub endpoint URL>"
-    ],
-    "DeviceAuthentication": "<Azure Sphere Tenant ID>",
-    "AllowedApplicationConnections": ["005180bc-402f-4cb3-a662-72937dbcde47"],
-    "Gpio": [
-      "$WIZNET_ASG200_CONNECTION_STATUS_LED",
-      "$WIZNET_ASG200_WLAN_STATUS_LED",
-      "$WIZNET_ASG200_ETH0_STATUS_LED",
-      "$WIZNET_ASG200_ETH1_STATUS_LED"
-    ],
-    "NetworkConfig": true,
-    "WifiConfig": true
-  },
-  "ApplicationType": "Default"
-}
-```
-
-## Set up Public Ethernet interface
-
-To enable ethernet interface for public network and communication with Azure IoT, install ethernet imagepackage by deploying a board configuration image to ASG200. The board configuration image contains information that the Azure Sphere Security Service requires to add support for Ethernet to the Azure Sphere OS.
-
-Follow these steps to enable public ethernet interface:
-
-1. Create a board configuration image package
-
-   ```
-   azsphere image-package pack-board-config –-preset lan-enc28j60-isu0-int5 –-output enc28j60-isu0-int5.imagepackage
-   ```
-
-2. Prepare ASG200 for development mode
-
-   ```
-   azsphere device enable-development
-   ```
-
-3. Sideload a board configuration image package
-
-   ```
-   azsphere device sideload deploy -–imagepackage enc29j60-isu0-int5.imagepackage
-   ```
-
-4. Check the sideloaded imagepackage
-
-   ```
-   azsphere device image list-installed
-   ```
-
-![Azure Sphere CLI - Image Installed list](./Docs/references/azure-sphere-cli-image-installed-list.png)
-
-## Build and Run the Application
-
-The application can be run and developed with Visual Studio and Visual Studio Code.
-
-### Run with Visual Studio
-
-Follow these steps to build and run the application with Visual Studio:
-
-1. Start Visual Studio, From the File menu, select Open > Folder… and navigate to the folder, ‘HLApp_AzureIoT_ASG200’.
-
-2. Open app_manifest.json file and check the information correct.
-
-![Visual Studio - Open app_manifest.json](./Docs/references/visual-studio-open-app-manifest.josn.png)
-
-3. From the Select Startup Item menu, on the tool bar, select GDB Debugger (HLCore).
-
-![Visual Studio - Select GDB Debugger](./Docs/references/visual-studio-select-gdb-debugger.png)
-
-4. Click Build>Build All to build the project
-
-![Visual Studio - Build the project](./Docs/references/visual-studio-build-the-project.png)
-
-5. Press F5 to start the application with debugging.
-
-### Run with Visual Studio Code
-
-Follow these steps to build and run the application with Visual Studio Code:
-
-1. Open ‘HLApp_AzureIoT_ASG200’ folder.
-
-![Visual Studio Code - Open Project Folder](./Docs/references/visual-studio-code-open-project-folder.png)
-
-2. Press F7 to build the project
-
-3. Press F5 to start the application with debugging
+* [Run High-level Application: AzureIoT](https://github.com/WIZnet-Azure-Sphere/ASG200_App/tree/master/Software/WIZASG200_HLApp_AzureIoT)
