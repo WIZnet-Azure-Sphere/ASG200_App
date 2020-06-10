@@ -23,17 +23,17 @@ The application can be run and developed with Visual Studio and Visual Studio Co
 
 Follow these steps to build and run the application with Visual Studio:
 
-1. Start Visual Studio, From the File menu, select `Open` > `Folder…` and navigate to the folder, `WIZASG200_RTApp_W5500_SPI_BareMetal`.
+1. Start Visual Studio, From the File menu, select `Open` > `Folder` and navigate to the folder, `WIZASG200_RTApp_W5500_SPI_BareMetal`.
 
 2. From the Select Startup Item menu, on the tool bar, select `GDB Debugger (RTCore)`.
 
 ![Visual Studio - Select GDB Debugger](../../Docs/references/visual-studio-select-gdb-debugger-rt.png)
 
-4. Click `Build` > `Build All` to build the project
+3. Click `Build` > `Build All` to build the project
 
 ![Visual Studio - Build the project](../../Docs/references/visual-studio-build-the-project.png)
 
-5. Press F5 to start the application with debugging.
+4. Press <kbd>**F5**</kbd> to start the application with debugging.
 
 ### Run with Visual Studio Code
 
@@ -43,6 +43,6 @@ Follow these steps to build and run the application with Visual Studio Code:
 
 ![Visual Studio Code - Open Project Folder](../../Docs/references/visual-studio-code-open-project-folder.png)
 
-2. Press F7 to build the project
+2. Press <kbd>**F7**</kbd> to build the project
 
-3. Press F5 to start the application with debugging
+3. Press <kbd>**F5**</kbd> to start the application with debugging

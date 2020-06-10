@@ -77,8 +77,8 @@ On Azure Sphere Developer Command Prompt Preview, the option, -?, helps to show 
 
 To manage Azure Sphere elements for development, log in Azure Sphere Developer Command Prompt Preview with Microsoft account. To use Azure Sphere Security Service, Microsoft Account is required.
 
-1.  Log in on ‘azsphere login’ command
-    (Needed the option, –-newuser, with ‘azsphere login’ command to register the account only have to sign in once.)
+1.  Log in on `azsphere login` command
+    (Needed the option, –-newuser, with `azsphere login` command to register the account only have to sign in once.)
 
         ```
         azsphere login --newuser <MS account>
@@ -183,6 +183,13 @@ On development mode, OTA is inactivated.
 For the ASG200 application, chapter 5, Development Environment, is preceded.
 
 ASG200 application has two types of applications, High-level application and Real-time capable application.
+
+### To Clone this repository:
+```
+$ git clone https://github.com/WIZnet-Azure-Sphere/ASG200_App
+```
+
+Refer each application page for details on how to use.
 
 ## Real-time capable Application: W5500 SPI BareMetal
 
