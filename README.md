@@ -48,8 +48,24 @@ Download Azure Sphere SDK and install it.
 
 Then complete Azure Sphere SDK Extension Install for development tool.
 
-- [For Visual Studio, Azure Sphere SDK Extension Install](https://docs.microsoft.com/ko-kr/azure-sphere/install/development-environment-windows#develop-with-visual-studio)
-- [For Visual Studio, Azure Sphere SDK Extension Install](https://docs.microsoft.com/ko-kr/azure-sphere/install/development-environment-windows#develop-with-visual-studio-code)
+- [For Visual Studio, Azure Sphere SDK Extension Install](https://docs.microsoft.com/en-us/azure-sphere/install/development-environment-windows#develop-with-visual-studio)
+- [For Visual Studio Code, Azure Sphere SDK Extension Install](https://docs.microsoft.com/en-us/azure-sphere/install/development-environment-windows#develop-with-visual-studio-code)
+
+
+### Visual Studio Code settings.json
+
+Below is example settings for Visual Studio Code:
+```
+...
+   "cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe",
+   "cmake.configureSettings": {
+      "CMAKE_MAKE_PROGRAM": "C:\\ninja\\ninja-v1.10.0\\ninja.exe",
+   },
+   "AzureSphere.ArmGnuPath": "C:\\Program Files (x86)\\GNU Arm Embedded Toolchain\\9 >2020-q2-update\\bin",
+   "AzureSphere.SdkPath": "C:\\Program Files (x86)\\Microsoft Azure Sphere SDK",
+...
+```
+
 
 ## Azure Sphere Debugger
 
@@ -58,7 +74,7 @@ For this, ASG200 components have a ‘Debugger’ board which can attaches to 18
 
 Please follow these steps described in this link:
 
-- [FTDI FT_PROG programming tool](https://docs.microsoft.com/ko-kr/azure-sphere/hardware/mt3620-mcu-program-debug-interface#ftdi-ft_prog-programming-tool)
+- [FTDI FT_PROG programming tool](https://docs.microsoft.com/en-us/azure-sphere/hardware/mt3620-mcu-program-debug-interface#ftdi-ft_prog-programming-tool)
 
 # Development Environment
 
@@ -166,13 +182,11 @@ Connect Debugger board which is attached to ASG200 debug interface to PC and set
 
 On development mode, OTA is inactivated.
 
-1. Development mode for debugging
+1. Development mode for debugging (Add option for RT App debugging)
 
-   ```
-   azsphere device enable-development
-   ```
+>`--enablertcoredebugging` option requires administrator privilege because it installs USB drivers for the debugger.
 
-2. Add option for RT App debugging
+>Right-click the Azure Sphere Developer Command Prompt shortcut and select More>Run as administrator.
 
    ```
    azsphere device enable-development --enablertcoredebugging
