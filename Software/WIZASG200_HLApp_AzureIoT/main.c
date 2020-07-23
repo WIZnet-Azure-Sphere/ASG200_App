@@ -46,7 +46,11 @@
 // See https://github.com/Azure/azure-sphere-samples/tree/master/Hardware for more details.
 //
 // This #include imports the wiznet_asg200 abstraction from that hardware definition.
+#if 0
 #include <hw/wiznet_asg200.h>
+#else
+#include <hw/usi_mt3620_bt_evb.h>
+#endif
 
 #include "eventloop_timer_utilities.h"
 
@@ -811,36 +815,36 @@ static ExitCode InitPeripheralsAndHandlers(void)
     }
 
 #if 1 // init led
-    Log_Debug("Opening WIZNET_ASG200_CONNECTION_STATUS_LED as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN9_GPIO8 as output\n");
     azureStatusLedGpioFd =
-        GPIO_OpenAsOutput(WIZNET_ASG200_CONNECTION_STATUS_LED, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN9_GPIO8, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (azureStatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);
         return -1;
     }
 
-    Log_Debug("Opening WIZNET_ASG200_ETH0_STATUS_LED as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN10_GPIO9 as output\n");
     ethStatusLedGpioFd =
-        GPIO_OpenAsOutput(WIZNET_ASG200_ETH0_STATUS_LED, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN10_GPIO9, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (ethStatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);
         return -1;
     }
 
-    Log_Debug("Opening WIZNET_ASG200_WLAN_STATUS_LED as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN11_GPIO10 as output\n");
     wifiStatusLedGpioFd =
-        GPIO_OpenAsOutput(WIZNET_ASG200_WLAN_STATUS_LED, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN11_GPIO10, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (wifiStatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);
         return -1;
     }
 #if 1 //lawrence
-    Log_Debug("Opening WIZNET_ASG200_ETH1_STATUS_LED as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN12_GPIO11 as output\n");
     eth1StatusLedGpioFd =
-        GPIO_OpenAsOutput(WIZNET_ASG200_ETH1_STATUS_LED, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN12_GPIO11, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (eth1StatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);
