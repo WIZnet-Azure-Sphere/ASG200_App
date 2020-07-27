@@ -750,6 +750,9 @@ static void AzureTimerEventHandler(EventLoopTimer *timer)
 
 #if 1 // lawrence - azure led
     if (iothubAuthenticated) {
+        // Keep active the flow of data with the Azure IoT Hub
+        IoTHubDeviceClient_LL_DoWork(iothubClientHandle);
+        
         if (azureStatusLedGpioFd >= 0) {
             GPIO_SetValue(azureStatusLedGpioFd, GPIO_Value_Low);
         }
