@@ -392,8 +392,8 @@ static void SendTimeData(void)
     time_t t;
     time(&t);
     struct tm *tm = gmtime(&t);
-    if (strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", tm) != 0) {
-        Log_Debug("INFO: Time data: %s\n", timeBuf);
+    if (strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", tm) == 0) {
+        Log_Debug("INFO: Time data failed\n");
     }
 
     int bytesSent = send(sockFd, timeBuf, strlen(timeBuf), 0);
@@ -509,7 +509,9 @@ static int OutputStoredWifiNetworks(void)
         if (storedNetworksArray[i].isConnected)
         {
             wifi_connected = true;
+#ifdef USE_DEBUG
             Log_Debug("WiFi[%d] Connected \n", i);
+#endif
         }
     }
     storedNetworkCnt = i;
@@ -754,6 +756,9 @@ static void AzureTimerEventHandler(EventLoopTimer *timer)
 
 #if 1 // lawrence - azure led
     if (iothubAuthenticated) {
+        // Keep active the flow of data with the Azure IoT Hub
+        IoTHubDeviceClient_LL_DoWork(iothubClientHandle);
+        
         if (azureStatusLedGpioFd >= 0) {
             GPIO_SetValue(azureStatusLedGpioFd, GPIO_Value_Low);
         }
@@ -842,9 +847,9 @@ static ExitCode InitPeripheralsAndHandlers(void)
         return -1;
     }
 #if 1 //lawrence
-    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN12_GPIO11 as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN5_GPIO4 as output\n");
     eth1StatusLedGpioFd =
-        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN12_GPIO11, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN5_GPIO4, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (eth1StatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);

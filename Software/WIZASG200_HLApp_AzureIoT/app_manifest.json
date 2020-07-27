@@ -15,7 +15,7 @@
       "$USI_MT3620_BT_EVB_J32_PIN9_GPIO8",
       "$USI_MT3620_BT_EVB_J32_PIN10_GPIO9",
       "$USI_MT3620_BT_EVB_J32_PIN11_GPIO10",
-      "$USI_MT3620_BT_EVB_J32_PIN12_GPIO11"
+      "$USI_MT3620_BT_EVB_J32_PIN5_GPIO4"
     ],
     "NetworkConfig": true,
     "WifiConfig": true
