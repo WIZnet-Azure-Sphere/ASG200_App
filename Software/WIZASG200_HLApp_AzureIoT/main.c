@@ -820,36 +820,36 @@ static ExitCode InitPeripheralsAndHandlers(void)
     }
 
 #if 1 // init led
-    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN9_GPIO8 as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J34_PIN16_GPIO41 as output\n");
     azureStatusLedGpioFd =
-        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN9_GPIO8, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J34_PIN16_GPIO41, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (azureStatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);
         return -1;
     }
 
-    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN10_GPIO9 as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J34_PIN18_GPIO43 as output\n");
     ethStatusLedGpioFd =
-        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN10_GPIO9, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J34_PIN18_GPIO43, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (ethStatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);
         return -1;
     }
 
-    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN11_GPIO10 as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J34_PIN15_GPIO42 as output\n");
     wifiStatusLedGpioFd =
-        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN11_GPIO10, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J34_PIN15_GPIO42, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (wifiStatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);
         return -1;
     }
 #if 1 //lawrence
-    Log_Debug("Opening USI_MT3620_BT_EVB_J32_PIN5_GPIO4 as output\n");
+    Log_Debug("Opening USI_MT3620_BT_EVB_J34_PIN17_GPIO44 as output\n");
     eth1StatusLedGpioFd =
-        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J32_PIN5_GPIO4, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(USI_MT3620_BT_EVB_J34_PIN17_GPIO44, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (eth1StatusLedGpioFd < 0)
     {
         Log_Debug("ERROR: Could not open LED: %s (%d).\n", strerror(errno), errno);

@@ -12,10 +12,11 @@
     "DeviceAuthentication": "<Azure Sphere Tenant ID>",
     "AllowedApplicationConnections": ["005180bc-402f-4cb3-a662-72937dbcde47"],
     "Gpio": [
-      "$USI_MT3620_BT_EVB_J32_PIN9_GPIO8",
-      "$USI_MT3620_BT_EVB_J32_PIN10_GPIO9",
-      "$USI_MT3620_BT_EVB_J32_PIN11_GPIO10",
-      "$USI_MT3620_BT_EVB_J32_PIN5_GPIO4"
+      "$USI_MT3620_BT_EVB_J34_PIN16_GPIO41",
+      "$USI_MT3620_BT_EVB_J34_PIN15_GPIO42",
+      "$USI_MT3620_BT_EVB_J34_PIN18_GPIO43",
+      "$USI_MT3620_BT_EVB_J34_PIN17_GPIO44",
+      "$USI_MT3620_BT_EVB_J34_PIN20_GPIO45"
     ],
     "NetworkConfig": true,
     "WifiConfig": true
