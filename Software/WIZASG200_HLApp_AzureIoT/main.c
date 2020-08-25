@@ -388,8 +388,8 @@ static void SendTimeData(void)
     time_t t;
     time(&t);
     struct tm *tm = gmtime(&t);
-    if (strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", tm) != 0) {
-        Log_Debug("INFO: Time data: %s\n", timeBuf);
+    if (strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", tm) == 0) {
+        Log_Debug("INFO: Time data failed\n");
     }
 
     int bytesSent = send(sockFd, timeBuf, strlen(timeBuf), 0);
@@ -505,7 +505,9 @@ static int OutputStoredWifiNetworks(void)
         if (storedNetworksArray[i].isConnected)
         {
             wifi_connected = true;
+#ifdef USE_DEBUG
             Log_Debug("WiFi[%d] Connected \n", i);
+#endif
         }
     }
     storedNetworkCnt = i;

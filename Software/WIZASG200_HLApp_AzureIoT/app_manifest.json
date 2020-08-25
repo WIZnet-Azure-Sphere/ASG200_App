@@ -3,13 +3,13 @@
   "Name": "HLApp_AzureIoT_WIZASG200",
   "ComponentId": "819255ff-8640-41fd-aea7-f85d34c491d5",
   "EntryPoint": "/bin/app",
-  "CmdArgs": ["<Azure DPS Scope ID>"],
+  "CmdArgs": ["0ne000937DF"],
   "Capabilities": {
     "AllowedConnections": [
       "global.azure-devices-provisioning.net",
-      "<Azure IoT Hub endpoint URL>"
+      "WizFiTestHub.azure-devices.net"
     ],
-    "DeviceAuthentication": "<Azure Sphere Tenant ID>",
+    "DeviceAuthentication": "2059ba05-0963-4303-80c8-f23754cb5c95",
     "AllowedApplicationConnections": ["005180bc-402f-4cb3-a662-72937dbcde47"],
     "Gpio": [
       "$WIZNET_ASG200_CONNECTION_STATUS_LED",
