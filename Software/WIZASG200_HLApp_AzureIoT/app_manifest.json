@@ -3,20 +3,17 @@
   "Name": "HLApp_AzureIoT_WIZASG200",
   "ComponentId": "819255ff-8640-41fd-aea7-f85d34c491d5",
   "EntryPoint": "/bin/app",
-  "CmdArgs": ["<Azure DPS Scope ID>"],
+  "CmdArgs": [ "<Azure DPS Scope ID>" ],
   "Capabilities": {
-    "AllowedConnections": [
-      "global.azure-devices-provisioning.net",
-      "<Azure IoT Hub endpoint URL>"
-    ],
+    "AllowedConnections": [ "global.azure-devices-provisioning.net", "<Azure IoT Hub endpoint URL>" ],
     "DeviceAuthentication": "<Azure Sphere Tenant ID>",
-    "AllowedApplicationConnections": ["005180bc-402f-4cb3-a662-72937dbcde47"],
+    "AllowedApplicationConnections": [ "005180bc-402f-4cb3-a662-72937dbcde47" ],
     "Gpio": [
-      "$USI_MT3620_BT_EVB_J34_PIN16_GPIO41",
-      "$USI_MT3620_BT_EVB_J34_PIN15_GPIO42",
-      "$USI_MT3620_BT_EVB_J34_PIN18_GPIO43",
-      "$USI_MT3620_BT_EVB_J34_PIN17_GPIO44",
-      "$USI_MT3620_BT_EVB_J34_PIN20_GPIO45"
+      "$USI_MT3620_BT_COMBO_PIN28_GPIO41",
+      "$USI_MT3620_BT_COMBO_PIN27_GPIO42",
+      "$USI_MT3620_BT_COMBO_PIN26_GPIO43",
+      "$USI_MT3620_BT_COMBO_PIN25_GPIO44",
+      "$USI_MT3620_BT_COMBO_PIN24_GPIO45"
     ],
     "NetworkConfig": true,
     "WifiConfig": true
