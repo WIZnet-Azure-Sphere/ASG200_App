@@ -142,12 +142,12 @@ static volatile int g_async_done_flag;
 
 // Default Static Network Configuration for TCP Server 
 #if 0
-// wiz_NetInfo gWIZNETINFO = { {0x00, 0x08, 0xdc, 0xff, 0xfa, 0xfb},
-//                            {192, 168, 50, 10},
-//                            {255, 255, 255, 0},
-//                            {192, 168, 50, 1},
-//                            {8, 8, 8, 8},
-//                            NETINFO_STATIC };
+wiz_NetInfo gWIZNETINFO = { {0x00, 0x08, 0xdc, 0xff, 0xfa, 0xfb},
+                           {192, 168, 50, 10},
+                           {255, 255, 255, 0},
+                           {192, 168, 50, 1},
+                           {8, 8, 8, 8},
+                           NETINFO_STATIC };
 #else
 wiz_NetInfo gWIZNETINFO = {};
 #endif
@@ -259,6 +259,21 @@ void InitPrivateNetInfo(void) {
         setSn_CR(i, 0x10);
     }
     printf("Socket 0-7 Closed \r\n");
+}
+
+void w5500_init() {
+    // W5500 reset
+    gpio_output(gpio_w5500_reset, OS_HAL_GPIO_DATA_HIGH);
+
+    osai_delay_ms(150);
+
+    // W5500 ready check
+    os_hal_gpio_data w5500_ready;
+    gpio_input(gpio_w5500_ready, &w5500_ready);
+
+    while (1) {
+        if (w5500_ready) break;
+    }
 }
 
 
@@ -452,15 +467,8 @@ _Noreturn void RTCoreMain(void)
     printf("W5500_RTApp_MT3620_BareMetal\r\n");
     printf("App built on: " __DATE__ " " __TIME__ "\r\n");
 
-    // W5500 reset
-    gpio_output(gpio_w5500_reset, OS_HAL_GPIO_DATA_HIGH);
-
-    // W5500 ready check
-    os_hal_gpio_data w5500_ready;
-    gpio_input(gpio_w5500_ready, &w5500_ready);
-
-    while (!w5500_ready);
-
+    /* Init W5500 */
+    w5500_init();
 
     InitPrivateNetInfo();
 // #define TEST_AX1
