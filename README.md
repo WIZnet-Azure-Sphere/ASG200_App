@@ -48,8 +48,8 @@ Download Azure Sphere SDK and install it.
 
 Then complete Azure Sphere SDK Extension Install for development tool.
 
-- [For Visual Studio, Azure Sphere SDK Extension Install](https://docs.microsoft.com/en-us/azure-sphere/install/development-environment-windows#develop-with-visual-studio)
-- [For Visual Studio Code, Azure Sphere SDK Extension Install](https://docs.microsoft.com/en-us/azure-sphere/install/development-environment-windows#develop-with-visual-studio-code)
+- [For Visual Studio, Azure Sphere SDK Extension Install](https://docs.microsoft.com/en-us/azure-sphere/install/install-sdk?pivots=visual-studio)
+- [For Visual Studio Code, Azure Sphere SDK Extension Install](https://docs.microsoft.com/en-us/azure-sphere/install/install-sdk?pivots=vs-code)
 
 
 ### Visual Studio Code settings.json
